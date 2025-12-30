@@ -1,18 +1,37 @@
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
+  const { name, email, password } = await req.json();
 
-  const hashed = await bcrypt.hash(password, 10);
+  if (!email || !password) {
+    return NextResponse.json(
+      { error: "Email e senha obrigatórios" },
+      { status: 400 }
+    );
+  }
 
-  await prisma.user.create({
+  const userExists = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (userExists) {
+    return NextResponse.json({ error: "Usuário já existe" }, { status: 400 });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await prisma.user.create({
     data: {
+      name,
       email,
-      password: hashed,
+      password: hashedPassword,
     },
   });
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({
+    id: user.id,
+    email: user.email,
+  });
 }

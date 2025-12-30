@@ -1,24 +1,33 @@
 "use client";
 
-import bcrypt from "bcrypt";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    const form = e.currentTarget;
-    const email = form.email.value;
-    const password = form.password.value;
 
     const res = await fetch("/api/register", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
     });
 
-    if (res.ok) router.push("/login");
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error);
+      return;
+    }
+
+    alert("Conta criada com sucesso!");
   }
 
   return (
@@ -48,19 +57,31 @@ export default function RegisterPage() {
             </h1>
           </div>
         </div>
+
         <input
-          name="email"
-          type="email"
+          placeholder="Nome"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+
+        <input
           placeholder="Email"
+          type="email"
           className="w-full border p-2 rounded"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
+
         <input
-          name="password"
-          type="password"
           placeholder="Senha"
+          type="password"
           className="w-full border p-2 rounded"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
-        <button className="w-full rounded bg-green-200 p-2 text-black">
+
+        <button
+          className="w-full rounded bg-green-200 p-2 text-black"
+          onClick={() => router.push("/login")}
+        >
           Criar conta
         </button>
       </form>

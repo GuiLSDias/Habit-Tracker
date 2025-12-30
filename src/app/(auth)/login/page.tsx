@@ -1,25 +1,37 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error);
+      return;
+    }
+
+    alert("Login realizado!");
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-amber-50">
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const form = e.currentTarget;
-          const email = form.email.value;
-          const password = form.password.value;
-
-          await signIn("credentials", {
-            email,
-            password,
-            callbackUrl: "/dashboard",
-          });
-        }}
-        className="w-full max-w-sm space-y-3"
-      >
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-3">
         <div className="flex min-h-50 items-center justify-center">
           <div className="flex items-center gap-2 mb-6">
             <div className="p-2 bg-green-400 rounded-lg">
@@ -44,21 +56,31 @@ export default function LoginPage() {
             </h1>
           </div>
         </div>
+
         <input
-          name="email"
-          type="email"
           placeholder="Email"
+          type="email"
           className="w-full border p-2 rounded"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
+
         <input
-          name="password"
-          type="password"
           placeholder="Senha"
-          className="w-full border p-2  rounded"
+          type="password"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
         <button className="w-full rounded bg-green-200 p-2 text-black">
           Entrar
+        </button>
+
+        <button
+          type="button"
+          onClick={() => router.push("/register")}
+          className="w-full rounded bg-blue-200 p-2 text-black"
+        >
+          Criar Conta
         </button>
       </form>
     </div>
