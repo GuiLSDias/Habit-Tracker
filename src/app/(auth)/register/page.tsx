@@ -22,20 +22,48 @@ export default function RegisterPage() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex min-h-screen flex-col items-center justify-center space-y-2"
-    >
-      <input name="email" placeholder="Email" className="border p-2" />
-      <input
-        name="password"
-        type="password"
-        placeholder="Senha"
-        className="border p-2"
-      />
-      <button className="rounded bg-green-600 p-2 text-white">
-        Criar conta
-      </button>
-    </form>
+    <div className="flex min-h-screen items-center justify-center bg-amber-50">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-3">
+        <div className="flex min-h-50 items-center justify-center">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="p-2 bg-green-400 rounded-lg">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+            </div>
+
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-teal-400">
+              HabitFlow
+            </h1>
+          </div>
+        </div>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          className="w-full border p-2 rounded"
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Senha"
+          className="w-full border p-2 rounded"
+        />
+        <button className="w-full rounded bg-green-200 p-2 text-black">
+          Criar conta
+        </button>
+      </form>
+    </div>
   );
 }
