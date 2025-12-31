@@ -13,7 +13,7 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const res = await fetch("/api/login", {
+    const res = await fetch("/api/auth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -27,6 +27,7 @@ export default function LoginPage() {
     }
 
     alert("Login realizado!");
+    router.push("/dashboard"); // Redireciona para a rota /dashboard
   }
 
   return (
