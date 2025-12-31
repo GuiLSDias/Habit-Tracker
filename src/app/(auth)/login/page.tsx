@@ -26,7 +26,7 @@ export default function LoginPage() {
       return;
     }
 
-    alert("Login realizado!");
+    // alert("Login realizado!");
     router.push("/dashboard"); // Redireciona para a rota /dashboard
   }
 

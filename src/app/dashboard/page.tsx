@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import LogoutButton from "@/components/logoutbutton";
 
 export const runtime = "nodejs";
 
@@ -47,14 +48,9 @@ export default async function DashboardPage() {
               Olá, {user.name ?? user.email}
             </span>
 
-            <form action="/api/logout" method="post">
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 text-sm font-medium transition-colors"
-              >
-                Sair
-              </button>
-            </form>
+            <div>
+              <LogoutButton />
+            </div>
           </div>
         </div>
       </header>
@@ -66,7 +62,7 @@ export default async function DashboardPage() {
             <h2 className="text-2xl font-bold text-gray-800">Meus hábitos</h2>
 
             <Link
-              href="/habits/new"
+              href="/dashboard/habits/"
               className="px-5 py-2.5 rounded-lg bg-black text-white hover:bg-gray-800 text-sm font-medium transition-all shadow-lg shadow-gray-200"
             >
               + Novo hábito

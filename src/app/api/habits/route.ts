@@ -15,6 +15,13 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+  const validFrequencies = ["DAILY", "WEEKLY", "MONTHLY"];
+  if (!validFrequencies.includes(frequency)) {
+    return NextResponse.json(
+      { error: "Frequência inválida. Use: DAILY, WEEKLY ou MONTHLY." },
+      { status: 400 }
+    );
+  }
 
   const habit = await prisma.habit.create({
     data: {

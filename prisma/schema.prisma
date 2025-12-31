@@ -57,5 +57,6 @@ model HabitLog {
 enum Frequency {
   DAILY
   WEEKLY
+  MONTHLY
 }
 
